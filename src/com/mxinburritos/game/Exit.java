@@ -14,7 +14,7 @@ public class Exit {
 	public static final int SOUTHWEST = 10;
 	public static final int IN = 11;
 	public static final int OUT = 12;
-	
+
 	public static final String[] dirName =
 		{
 				"UNDEFINED",
@@ -31,7 +31,7 @@ public class Exit {
 				"IN",
 				"OUT"
 		};
-	
+
 	public static final String[] shortDirName =
 		{
 				"NULL",
@@ -48,17 +48,17 @@ public class Exit {
 				"I",
 				"O"
 		};
-	
+
 	//Member variables
 	private Location m_leadsTo = null;
 	private int m_direction;
-	
+
 	//Full name of direction
 	private String m_directionName;
-	
+
 	//Short name of direction
 	private String m_shortDirectionName;
-	
+
 	public Exit(int direction, Location leadsTo)
 	{
 		m_direction = direction;
@@ -72,37 +72,37 @@ public class Exit {
 		}
 		m_leadsTo = leadsTo;
 	}
-	
+
 	public String toString()
 	{
 		return m_directionName;
 	}
-	
+
 	public void setDirectionName( String dirname )
 	{
 		m_directionName = dirname;
 	}
-	
+
 	public String getDirectionName()
 	{
 		return m_directionName;
 	}
-	
+
 	public void setShortDirectionName(String shortName)
 	{
 		m_shortDirectionName = shortName;
 	}
-	
+
 	public String getShortDirectionName()
 	{
 		return m_shortDirectionName;
 	}
-	
+
 	public void setLeadsTo(Location leadsTo)
 	{
 		m_leadsTo = leadsTo;
 	}
-	
+
 	public Location getLeadsTo()
 	{
 		return m_leadsTo;

@@ -6,6 +6,8 @@ public class Location {
 	private String m_roomTitle;
 	private String m_roomDescription;
 	private Vector m_vecExits;
+	public Vector characters = new Vector();
+	public Vector items = new Vector();
 	
 	public Location( String title, String description)
 	{
