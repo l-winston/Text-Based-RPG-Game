@@ -5,8 +5,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import sun.applet.AppletPanel;
-
 public class Demo extends Applet {
 	boolean uselessBoolean = true;
 	boolean inventoryOpen = false;
@@ -69,6 +67,7 @@ public class Demo extends Applet {
 		party = new Party();
 
 		start = new Location("starting place", "starting place");
+		start.items.add(new Item("sword", "", 0, 0, 0, 0, false));
 		Location test = new Location("test", "test");
 
 		start.addExit(new Exit(Exit.NORTH, test));
@@ -84,9 +83,18 @@ public class Demo extends Applet {
 
 		displayOutput.appendText( currentLocation.getDescription()+ "\n");
 		List charactersInCurrentLocation = new ArrayList();
-		for(Object itemObj : currentLocation.characters){
-			
+		List<Item> itemList = new ArrayList<Item>();//list of items
+		for (Object itemObj : currentLocation.items) {//iterate through inventory of each characters
+			if(itemObj != null){//if not null
+				itemList.add((Item) itemObj);//add item
+			}
 		}
+		
+		for(Item i : itemList){
+			displayOutput.appendText( "\nThere is a " + i.name + " nearby. Would you like to pick it up?\n");
+		}
+
+		
 		displayOutput.appendText("\nAvailable exits: \n");
 		for(Enumeration e = currentLocation.getExits().elements(); e.hasMoreElements();)
 		{
