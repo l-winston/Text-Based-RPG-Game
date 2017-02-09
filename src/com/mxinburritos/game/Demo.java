@@ -8,14 +8,15 @@ import java.util.List;
 public class Demo extends Applet {
 	boolean uselessBoolean = true;
 	boolean inventoryOpen = false;
+	boolean pickUp = false;
 
 	String command;
 
 	private String[] types = { "class 1", "class 2", "class 3", "class 4", "class 5", "class 6" };
 	private double[] typeHpStats = { 150, 100, 85, 112, 70 };
 	private double[] typeDmgStats = { 0.75, 1.12, 1.00, 1.00, 1.25 };
+	private double[] typeSpdStats = { 4, 4, 4, 4, 3 };
 	private int[] typeRangeStats = { 0, 0, 1, 0, 2 };
-	private int[] typeSpdStats = { 4, 4, 4, 4, 3 };
 
 	String name;
 	String description;
@@ -83,17 +84,6 @@ public class Demo extends Applet {
 
 		displayOutput.appendText( currentLocation.getDescription()+ "\n");
 		List charactersInCurrentLocation = new ArrayList();
-		List<Item> itemList = new ArrayList<Item>();//list of items
-		for (Object itemObj : currentLocation.items) {//iterate through inventory of each characters
-			if(itemObj != null){//if not null
-				itemList.add((Item) itemObj);//add item
-			}
-		}
-		
-		for(Item i : itemList){
-			displayOutput.appendText( "\nThere is a " + i.name + " nearby. Would you like to pick it up?\n");
-		}
-
 		
 		displayOutput.appendText("\nAvailable exits: \n");
 		for(Enumeration e = currentLocation.getExits().elements(); e.hasMoreElements();)
@@ -103,6 +93,26 @@ public class Demo extends Applet {
 		}
 	}
 	
+	private Item showItems(){
+		List<Item> itemList = new ArrayList<Item>();//list of items
+		for (Object itemObj : currentLocation.items) {//iterate through inventory of each characters
+			if(itemObj != null){//if not null
+				itemList.add((Item) itemObj);//add item
+			}
+		}
+		if(!itemList.isEmpty()){
+			Item i = itemList.get(0);
+			displayOutput.append("\nYou found a " + i.name + ". Would you like to pick it up? (y/n)\n");
+			itemList.remove(i);
+			return i;
+		}
+		return null;
+	}
+	
+	private void pickUp(Item i){
+		currentLocation.items.remove(i);
+		party.items.add(i);
+	}
 	public boolean action(Event evt, Object focus) {
 		String command;
 
@@ -137,7 +147,7 @@ public class Demo extends Applet {
 				displayOutput.appendText("\nHuh? That doesn't sound right!\n"); //user input is not one of the choices
 			}
 			
-			if(!(charInit < 2)){
+			if(!(charInit < 2 && !pickUp)){
 				command = command.toUpperCase();
 				for (Enumeration e = currentLocation.getExits().elements(); e.hasMoreElements();){
 
@@ -152,6 +162,12 @@ public class Demo extends Applet {
 				}
 			}
 			
+			if(pickUp){
+				command = command.toUpperCase();
+				commandInput.setText (new String());
+				
+			}
+			
 			displayOutput.appendText("\nHuh? That doesn't sound right!\n"); //user input is not one of the choices
 			
 			commandInput.setText(new String());//clear input box
@@ -162,17 +178,9 @@ public class Demo extends Applet {
 	}
 
 	private void createCharacter(int i) {
-		Character character = new Character(name, "test", type, typeHpStats[i], typeDmgStats[i], typeSpdStats[i], typeRangeStats[i], new ItemVector().getVector(), null, false);
+		Character character = new Character(name, "test", type, typeHpStats[i], typeDmgStats[i], typeSpdStats[i], typeRangeStats[i], null, false);
 		party.party.add(character);
 		start.characters.addElement(character);
-		if(character.equipped != null){
-			start.items.addElement(character.equipped);
-		}
-		for(Object itemObj : character.items){
-			if(itemObj != null){
-				start.items.add(itemObj);
-			}
-		}
 		currentLocation = start;
 		showLocation();
 	}
@@ -196,7 +204,7 @@ public class Demo extends Applet {
 			if(c.equipped != null){//if null, don't add
 				itemList.add(c.equipped);
 			}
-			for (Object itemObj : c.items) {//iterate through inventory of each characters
+			for (Object itemObj : party.items) {//iterate through inventory of each characters
 				if(itemObj != null){//if not null
 					itemList.add((Item) itemObj);//add item
 				}
