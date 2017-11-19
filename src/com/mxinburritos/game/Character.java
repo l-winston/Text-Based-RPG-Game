@@ -10,12 +10,14 @@ public class Character {
 	public double dmgMod;
 	public double spd;
 	public int range;
+	public Vector items;
 	public Item equipped;
 	public boolean isEnemy;
 
 	public double hp;
 
-	public Character(String name, String description, String type, double maxHp, double dmgMod, double spd, int range, Item equipped, boolean isEnemy) {
+	public Character(String name, String description, String type, double maxHp, double dmgMod, int spd, int range,
+			Vector items, Item equipped, boolean isEnemy) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
@@ -24,6 +26,7 @@ public class Character {
 		this.dmgMod = dmgMod;
 		this.spd = spd;
 		this.range = range;
+		this.items = items;
 		this.equipped = equipped;
 		this.isEnemy = isEnemy;
 	}
